@@ -1,0 +1,65 @@
+version: "2.2"
+
+services:
+  web:
+   depends_on:
+    - api
+   build: ./frontend #build - context used for building the image, so build an image using the context - ./frontend
+   ports:
+     - 5173:5173
+   # specify the environment variables for the web service
+   # these environment variables will be available inside the container
+   environment:
+     VITE_API_URL: http://localhost:8000
+
+
+    # this is for docker compose watch mode
+    # anything mentioned under develop will be watched for changes by docker compose watch and it will perform the action mentioned
+   develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: /app #target is the path in the container where the files will be synced and its the workdir
+          action: sync
+
+  # define the api service/container
+  api:
+   depends_on:
+   - db
+   build: ./backend
+   ports:
+    - 8000:8000
+    # specify environment variables for the api service
+    # for demo purposes, we're using a local mongodb instance
+   environment:
+     DB_URL: mongodb://db/anime
+
+   develop:
+     watch:
+       - path: ./backend/package.json
+         action: rebuild
+       - path: ./backend/package-lock.json
+         action: rebuild
+
+       - path: ./backend
+         target: /app
+         action: sync
+
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    # specify the volumes to mount for the db service
+    # we're mounting the volume named "anime" inside the container at /data/db directory
+    # this is done so that the data inside the mongodb container is persisted even if the container is stopped
+    volumes:
+      - anime:/data/db 
+  
+
+# define the volumes to be used by the services
+volumes:
+    anime:
+   

@@ -1,0 +1,72 @@
+AWS Important Notes - 
+1) IAM - 
+2) EC2 Instance - AMI(OS) + security group + Instance Size(CPU + RAM) + Storage + EC2 User data.
+3) EBS - Elastic Block Store(Volume) is a network drive you can attach to your instances while they run and instances to persist data, even after their termination, they are bound to a specific availability zone and could detached from one EC2 and attached another EC2, ESB can be attached to multiple instances. Make an Amazon EBS volume available for use - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-using-volumes.html 
+.One could take snapshots and copy it across the AZ or region. 
+4) AMI - Amazon Machine Image - They are a customization of an EC2 instance, are built for a specific region and can be copied to other regions.
+5) EC2 instance store - Instead of EBS volume which are network drive with good but limited performance, so for that we use EC2 IS which is a high-performance disk. If stopped losses the data and good for temporary content, good for buffer, cache and scratch data.
+6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. Work with Linux EC2 instances in multi-AZ via EFS Mount Target. There is no capacity planning, highly available and scalable but expensive.
+   - EFS Infrequent Access is a storage class that is cost optimized for flies not accessed    every day based on their usage last time (60 days) enabled with lifecycle policy.
+7) Autoscaling and Load Balancing
+  - basics -
+      Scalability and Elasticity - 
+        1st Is ability to scale up or scale out.
+        2nd Is that there will be auto-scaling for system to scale based on load.
+8) ELB - Elastic Load Balancer - Comes under EC2 and it is managed load balancer.
+   - 4 Kinds of Load Balancers in AWS -
+     1) Application LB (HTTP/HTTPS/RPC) - Layer 7, routing features, static DNS(URL). 
+     2) Network LB (ultra-high performance, allows for TCP and UDP) - Layer 4 - Static IP via Elastic IP.
+     3) Gateway LB (GENEVE Protocol) - Layer 3 - this protocol on IP Packets, routes traffic to Firewalls set by us, Intrusion detection. 
+     4) Classic LB - Layer 4 & 7 (retired).
+9) S3 - Backup and storage, disaster recovery, hybrid cloud storage, media hosting, application host, archive, data lakes, software delivery, static website. Allows people to store objects(files) in buckets(directories). Buckets are defined at region level and must have globally unique name. Objects have a key which is the full path and composed of prefix + object name. They could be long names that have slashes. Values of Object are the content of body and if < 5GB, must use multi-part upload. Metadata (list of text key / value pairs - system or user metadata). Tags are also used (Unicode key / value pair - up to 10)- useful for security / lifecycle. Version based Id is there too if enabled. IAM Policies are used for User-Based access and Bucket Policies is a bucket wide from S3 console - allows cross accounts. Object and Bucket Access Control List - less common. Bucket Policy to grant public access to bucket and force objects to be encrypted at upload. Static Web Hosting can be enabled and S3 bucket's objects can be accessed. We can do versioning at the bucket level, same key overwrites will change the version so we version the buckets instead, also allows easy roll back. Replication requires versioning enabled and we can do 2 types - CRR(Cross region replication) and SRR(Same region replication), copying is async. and IAM permissions must be given to S3.
+
+
+
+
+
+
+
+
+
+
+
+Quota resolution - 
+The instance launch failed because the instance type you selected requires more vCPU capacity than your current vCPU limit allows for that instance type's bucket.
+Resolution
+Amazon Q recommends the following steps to resolve your error
+
+
+If you don't have permissions to do the following changes, contact your AWS Administrator.
+
+Open the AWS Service Quotas console
+In the navigation pane, choose 'EC2 Instance vCPU limits'
+Select the region 'us-west-2'
+Locate the quota named 'Running On-Demand Standard (A, C, D, H, I, M, R, T, Z) Instance Family vCPUs'
+Click 'Request quota increase' for this quota
+Follow the guided workflow to request a vCPU quota increase for the instance family you need
+Once the quota increase is approved, retry launching your EC2 instance.
+
+
+Here are the next steps after requesting a quota increase for Amazon EC2:
+
+Wait for AWS to review and process your quota increase request. This typically takes 1-2 business days.
+
+You can check the status of your quota increase request in the AWS Service Quotas console. The status will show as "Pending" until it is approved or denied.
+
+Once your request is approved, the new quota limit will be applied to your account. You can then launch EC2 instances up to the new quota limit.
+
+If your request is denied, you can try providing additional justification for the quota increase or consider launching instances in a different AWS Region that has available capacity.
+
+For the most up-to-date information on EC2 quotas and the request process, I recommend referring to the AWS documentation:
+
+AWS Service Quotas documentation: https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html
+How to request a vCPU service quota increase for Amazon EC2: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-resource-limits.html#request-increase
+
+
+
+
+
+
+
+
+
