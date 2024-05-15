@@ -1,12 +1,20 @@
 AWS Important Notes - 
 1) IAM - 
 2) EC2 Instance - AMI(OS) + security group + Instance Size(CPU + RAM) + Storage + EC2 User data.
-3) EBS - Elastic Block Store(Volume) is a network drive you can attach to your instances while they run and instances to persist data, even after their termination, they are bound to a specific availability zone and could detached from one EC2 and attached another EC2, ESB can be attached to multiple instances. Make an Amazon EBS volume available for use - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-using-volumes.html 
-.One could take snapshots and copy it across the AZ or region. 
+3) EBS - Elastic Block Store(Volume) is a network drive you can attach to your instances while they run 
+   and instances to persist data, even after their termination, they are bound to a specific availability 
+   zone and could detached from one EC2 and attached another EC2, ESB can be attached to multiple instances. 
+   Make an Amazon EBS volume available for use - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-using-volumes.html 
+   .One could take snapshots and copy it across the AZ or region. 
 4) AMI - Amazon Machine Image - They are a customization of an EC2 instance, are built for a specific region and can be copied to other regions.
-5) EC2 instance store - Instead of EBS volume which are network drive with good but limited performance, so for that we use EC2 IS which is a high-performance disk. If stopped losses the data and good for temporary content, good for buffer, cache and scratch data.
-6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. Work with Linux EC2 instances in multi-AZ via EFS Mount Target. There is no capacity planning, highly available and scalable but expensive.
-   - EFS Infrequent Access is a storage class that is cost optimized for flies not accessed    every day based on their usage last time (60 days) enabled with lifecycle policy.
+5) EC2 instance store - Instead of EBS volume which are network drive with good but limited performance, 
+   so for that we use EC2 IS which is a high-performance disk. If stopped losses the data and good for 
+   temporary content, good for buffer, cache and scratch data.
+6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. 
+   Work with Linux EC2 instances in multi-AZ via EFS Mount Target. There is no capacity planning, 
+   highly available and scalable but expensive.
+   - EFS Infrequent Access is a storage class that is cost optimized for flies not accessed 
+     every day based on their usage last time (60 days) enabled with lifecycle policy.
 7) Autoscaling and Load Balancing
   - basics -
       Scalability and Elasticity - 
@@ -18,7 +26,21 @@ AWS Important Notes -
      2) Network LB (ultra-high performance, allows for TCP and UDP) - Layer 4 - Static IP via Elastic IP.
      3) Gateway LB (GENEVE Protocol) - Layer 3 - this protocol on IP Packets, routes traffic to Firewalls set by us, Intrusion detection. 
      4) Classic LB - Layer 4 & 7 (retired).
-9) S3 - Backup and storage, disaster recovery, hybrid cloud storage, media hosting, application host, archive, data lakes, software delivery, static website. Allows people to store objects(files) in buckets(directories). Buckets are defined at region level and must have globally unique name. Objects have a key which is the full path and composed of prefix + object name. They could be long names that have slashes. Values of Object are the content of body and if < 5GB, must use multi-part upload. Metadata (list of text key / value pairs - system or user metadata). Tags are also used (Unicode key / value pair - up to 10)- useful for security / lifecycle. Version based Id is there too if enabled. IAM Policies are used for User-Based access and Bucket Policies is a bucket wide from S3 console - allows cross accounts. Object and Bucket Access Control List - less common. Bucket Policy to grant public access to bucket and force objects to be encrypted at upload. Static Web Hosting can be enabled and S3 bucket's objects can be accessed. We can do versioning at the bucket level, same key overwrites will change the version so we version the buckets instead, also allows easy roll back. Replication requires versioning enabled and we can do 2 types - CRR(Cross region replication) and SRR(Same region replication), copying is async. and IAM permissions must be given to S3.
+9) S3 - Backup and storage, disaster recovery, hybrid cloud storage, media hosting, 
+   application host, archive, data lakes, software delivery, static website. Allows people to store 
+   objects(files) in buckets(directories). Buckets are defined at region level and must have globally 
+   unique name. Objects have a key which is the full path and composed of prefix + object name. 
+   They could be long names that have slashes. Values of Object are the content of body and if < 5GB, 
+   must use multi-part upload. Metadata (list of text key / value pairs - system or user metadata). 
+   Tags are also used (Unicode key / value pair - up to 10)- useful for security / lifecycle. 
+   Version based Id is there too if enabled. IAM Policies are used for User-Based access 
+   and Bucket Policies is a bucket wide from S3 console - allows cross accounts. 
+   Object and Bucket Access Control List - less common. Bucket Policy to grant public access to 
+   bucket and force objects to be encrypted at upload. Static Web Hosting can be enabled and S3 
+   bucket's objects can be accessed. We can do versioning at the bucket level, same key overwrites 
+   will change the version so we version the buckets instead, also allows easy roll back. 
+   Replication requires versioning enabled and we can do 2 types - CRR(Cross region replication) 
+   and SRR(Same region replication), copying is async. and IAM permissions must be given to S3.
 
 
 
