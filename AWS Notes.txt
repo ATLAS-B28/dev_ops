@@ -121,6 +121,11 @@ AWS Important Notes -
 26) Glue - Managed ETL service, useful to prepare and transform data for analytics, fully serverless.
 27) Database Migration Service - Source DB -> EC2 running DMS -> Target DB, it is self healing, resilient. 
     Homogenous and heterogenous migrations can be performed.
+28) ECS - Elastic Container Service and launch containers on AWS, we need to provide provision and maintain
+    the infra and AWS takes care of starting/stopping containers. Integrates with application
+    load balancer. 
+29) Fargate - Launch docker containers on AWS and then provision is maintained AWS. It is serverless offering and AWS just runs 
+    containers for us based on CPU/RAM we need. 
 
 
 
