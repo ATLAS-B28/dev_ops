@@ -7,7 +7,7 @@ AWS Important Notes -
    Make an Amazon EBS volume available for use - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-using-volumes.html 
    .One could take snapshots and copy it across the AZ or region. 
 4) AMI - Amazon Machine Image - They are a customization of an EC2 instance, are built for a specific region and can be copied to other regions.
-5) EC2 instance store - Instead of EBS volume which are network drive with good but limited performance, 
+5) EC2 Instance Store - Instead of EBS volume which are network drive with good but limited performance, 
    so for that we use EC2 IS which is a high-performance disk. If stopped losses the data and good for 
    temporary content, good for buffer, cache and scratch data.
 6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. 
@@ -41,6 +41,86 @@ AWS Important Notes -
    will change the version so we version the buckets instead, also allows easy roll back. 
    Replication requires versioning enabled and we can do 2 types - CRR(Cross region replication) 
    and SRR(Same region replication), copying is async. and IAM permissions must be given to S3.
+   Storage Class - Standard, Standard - Infrequent Access, One Zone - IA, Glacier(Instant, Flexible, 
+   Deep Archive), Integlligent Tiering. Lifecycle rule lets us automate things like changing between 
+   various storage class. Choose the actions we want to perform by the rule like moving between storage class or delete. 
+   Choose transitions to move current versions of objects between storage 
+   classes based on your use case scenario and performance access requirements. 
+   These transitions start from when the objects are created and are consecutively applied.
+   S3 Encryption - Server-side Encryption(after uploading) and Client-side Encryption(before upload).
+   IAM Access Analyzer for S3 for only few to have access to our buckets and evaluates the bucket Policies,
+   ACLs, Access point Policies.
+10) Snow Family - Highly secure, portable devices to collect and process data at edge,
+    and migrate data into/out of AWS. Has 3 services - snowcone, snowball edge, snowmobile.
+    Edge Computing - 
+    1) Snowcone & Snowcone SSD (smaller) - 2 CPUs, 4 GB of memory, wired or wireless access.
+    2) Snowball Edge - Compute Optimized - 104 vCPU, 416 GiB RAM, Optional GPU, 28 TB NVMe. Storage Clustering. 
+    3) Snowball Edge - Storage Optimized - Up to 40 vCPUs, 80 GiB of RAM, 80 TB storage, 
+       Up to to 104 vCPUs, 416 GiB of RAM, 210 TB NVMe storage.
+11) AWS Storage Cloud Native Options - 
+    Block - Amazon EBS, EC2 Instance Store
+    File - EFS
+    Object - S3, Glacier
+12) Storage Gateway - Hybrid storage service to allow on-premises to seamlessly use AWS Cloud
+    Types - 
+    1) File Gateway
+    2) Volume Gateway
+    3) Tape Gateway
+13) RDS - Reational Database Service, it's a managed DB service for DB use SQL.
+    Automated provisioning, OS patching, continuous backups and retore to
+    specific timesatamp, multi-AZ setup for disaster recovery, maintenance windows, 
+    monitoring, scaling capability, storage backed by EBS, replica reads, no SSH into instances.
+    We create RDS and take its snapshot where we can restore, copy, delete, share, migrate.
+    RDS Sol. Arch. - Elastics Load Balancer-->Multi-EC2 instances-->RDS.
+    RDS Deployments - Read Replicas -> Helps in rapid scaling, can create upto 15 replicas, data written to only main DB.
+                      Multi-AZ -> Fail-over in case of AZ outage, data read/write to main DB only.
+                      Multi-Region -> Combine the above two over mu regions.
+14) Aurora - PSQL, MySQL are both supported as Aurora DB and it is cloud optimized and claims 5x performance
+    imporvement over MySQL on RDS and 3x over PSQL on RDS. Aurora storage automatically
+    grows in increments of 10GB, up to 128TB. Not in free tier. There is also Aurora 
+    Serverless which has automated database instanisation and auto-scaling based on actual
+    usage, no capacity planning needed, least management overhead and pay per second.
+15) ElastiCache - Managed Redis, Memchached, caches are in-memory databases with high performance and low latency.
+    Helps reduce load off databases  for read intensive operations.  
+    Arch. - ELB - EC2 with ASG |--> ElastiCache
+                               |
+                               |--> RDS  
+16) Dynamo DB - Fully managed high availability and replication. AWS's NoSQL Key-Value database.
+    Scales massively for serverless workloads. Single Digit milisecond latency with 100s TB of storage.
+    Integrated with IAM. Has Standard and IA Table class. Has DynamoDB Accelerator which is a 
+    in-memory database for DynamoDB and improves 10x from milisecond latency to microsecond.
+    Here the table, the primary key is the hash of partition key used for retrieval of items from the 
+    table and allocate data across hosts for scalability and availability, and sort key which for 
+    optional that allows us to sort or search among all items sharing the same primary key.
+    Global Tables - make it accessible with low latency in multi-regions.
+17) RedShift - It's OLAP - online analytical Processing. It serves as data warehousing.
+    Load data every hour, columnar instead of row based storage, 10x better performance than others,
+    massively parallel query execution. Has SQL interface for performing queries and BI tools 
+    such as AWS QuickSight or Tableau integrate with it. Has a serverless option and offers
+    automatic provisions and scales data warehouse underlying capacity. Run analytics workloads
+    without managing data warehouse infra.
+18) EMR - Elastic MapReduce helps create Hadoop Clusters for Big data and can be made up of 100s
+    of EC2 instances and also supports Apache Spark, HBase, Presto, Flink. It takes care of provisioning
+    and congiguration and auto scaling is there too.
+19) Athena - Serverlesss query service for performing analytics aganist S3 objects and uses
+    standard SQL query and supports CSV, JSON, ORC, Avro and Parquet. Cost - $5.00 per TB of data
+    scanned and use compressed or columnar data for cost-savings. 
+20) QuickSight - Serverless machine learning-powered business intelligence service 
+    to create interactive dashboards.
+21) DocumentDB - AWS implementation of MongoDB, fully managed, highly available with replication across 3 AZ.
+    It automatically increments by 10 GB.
+22) Neptune - Managed graph database and used for various social networks. And highly available across 3 AZ,
+    with up to 15 read replicas. Has milisecond latency.
+23) TimeStream - Fully managed fast, scalable, serverless time series database. Automatically scale up/down
+    to adjust capacity. Store and analyze trillions of events per day, 1000s times faster and 1/10th the cost
+    of RD. Built-in time series analytics functions. 
+24) QLDB - Quantum Ledger DB and used for recording financial transactions and fully managed serverless, 
+    immutable system and used for review history, replication across 3 AZ.
+25) Managed Bkockchain - Is a managed service to join public blockchain networks or create your own scalable 
+    private network. Compatible with Hyperledger Fabric and Ethereum.
+26) Glue - Managed ETL service, useful to prepare and transform data for analytics, fully serverless.
+27) Database Migration Service - Source DB -> EC2 running DMS -> Target DB, it is self healing, resilient. 
+    Homogenous and heterogenous migrations can be performed.
 
 
 
@@ -48,6 +128,12 @@ AWS Important Notes -
 
 
 
+Note:- 
+Edge computing is a distributed computing framework that brings enterprise applications 
+closer to data sources such as IoT devices or local edge servers. 
+This proximity to data at its source can deliver strong business 
+benefits, including faster insights, improved response times and better 
+bandwidth availability.
 
 
 
