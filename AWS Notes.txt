@@ -126,7 +126,25 @@ AWS Important Notes -
     load balancer. 
 29) Fargate - Launch docker containers on AWS and then provision is maintained AWS. It is serverless offering and AWS just runs 
     containers for us based on CPU/RAM we need. 
-
+30) Lambda - No servers to manage and limited in execution time and runs on demand. Scaling is automated.
+    Easy pricing, pay per request and compute time. Integrated with other services and event-driven
+    and works with other langauges, easy monitoring via CloudWatch and easy to get resources per functions up to 10GB of RAM.
+    It has a container image. To create we can do it from scratch, use blueprint or container image is used. Lambda also creates 
+    IAM role for our function we can use existing role or use templates. We can create tests where a new event and it is in JSON format.
+    We can add trigger, layers and destination. We get priced per request(call) and compute time(duration)
+31) API Gateway - Fully managed service for developers to easily createm publish, maintain, monitor, and secure APIs. Serverless
+    and scalable, supporting RESTful and Websocket APIs. Supports the following - 
+    a) security
+    b) auth
+    c) API throttling
+    d) monitoring
+    e) API keys
+32) Batch - Fully managed batch processing at any scale, efficiently run 100,000s of computing batch jobs.
+    It automatically launch EC2 instances. It provisions the right amount of memory and compute. We only 
+    schedule and write the process and AWS Batch does the rest. The jobs are docker image on EC2 instance.
+34) Lightsail - It is virtual, storage, databases and networking, low and predictable pricing.
+    Simpler alternative to using EC2, RDS, ELB, EBS, Route 53. But has less high availability, 
+    Limited AWS Integrations.
 
 
 
