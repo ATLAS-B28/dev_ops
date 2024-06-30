@@ -183,7 +183,35 @@ AWS Important Notes -
       c) Store parameter configuration with SSM Parameter Store.
     SSM Session Manager - No SSH keys, access or hots nedded. No port 22 for better security. SSM Agent is EC2 instance, supports Linux and other OSs.
     Send session log data to S3 or CloudWatch logs.
-    System Manager Param Store - secure storage for config and secerts, contorl access permissions using IAM.  
+    System Manager Param Store - secure storage for config and secerts, contorl access permissions using IAM. Version tracking and Encryption.
+46) Route 53 - It is a managed DNS. DNS stands for Domain Name System which is a collection of rules and records which client understand how to reach a 
+    server through URLs. Routing policies - Simple RP with no health check, weighted RP allows for distributed traffic across multiple institute instances,
+    each wieght indicates the % of traffic each instance will get form the client and we have health checks here. Latency RP looks at user's location and then 
+    redirects them to the closest server, this is to reduce latency via Route 53, finally there is Failover RP for distater recovery, here if primary instance 
+    fails then the traffic will be redirected to failover instance, this is done by Route 53.
+    Setup process - 
+    1) Go to the dashboard in route 53 page.
+    2) Navigate to Register Domain and type the domain and it will check for availability, if so pay a price for it on yearly basis.
+    3) Register contact details of yours and it will create the domain.
+    4) Go to hosted zone details.
+    5) For example set-up 2 EC2 instance in different regions and put their IPv4 addresses along with AZ name.
+    6) Then go back to route 53 and create record and give value of IPv4 address.
+    7) Choose a routing policy like simple routing, weighted, latency, etc.
+    8) Region is selected along with string as Record ID. Then put Record name as what is needed and Record type.
+    9) Test the outcome.
+47) CloudFront - It is CDN, improves read performance, content is cached at the edge. DDoS protection, AWS WAF, integration with Shield. Usage as ingress in 
+    S3 bucket, custom Origin. It uses CloudFront Origin Access Control (OAC). It provides Global Edge Network. File cached via TTL (Time to Live).
+    1) On CloudFront dashboard go create distribution.
+    2) Then choose origin domain, here we choose the URL of the S3 bucket.
+    3) Keep origin access as Public.
+    4) Create OAC with same default name as the S3 bucket and keep the signining behavior as "Sign Requests"(you can also ask to not override auth headers if they are present).
+    5) We can have custom Header added, which will be added in every request.
+
+
+Note:- Regions - For deploying applications and infra
+       AZ - Made of multiple data centers
+       Edge Locations - For content delivery as close as possible to users
+
 
 
 
