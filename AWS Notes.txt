@@ -9,7 +9,17 @@ AWS Important Notes -
 4) AMI - Amazon Machine Image - They are a customization of an EC2 instance, are built for a specific region and can be copied to other regions.
 5) EC2 Instance Store - Instead of EBS volume which are network drive with good but limited performance, 
    so for that we use EC2 IS which is a high-performance disk. If stopped losses the data and good for 
-   temporary content, good for buffer, cache and scratch data.
+   temporary content, good for buffer, cache and scratch data. 
+   VPC and Subnet
+    A VPC (Virtual Private Cloud) is a virtual network dedicated to your AWS account. 
+   It is logically isolated from other virtual networks in the AWS Cloud. You can specify an IP address range for the VPC, add subnets, add gateways, 
+   and associate security groups.
+   A subnet is a range of IP addresses within your VPC. Some key points about subnets:
+   a) Subnets reside in a single Availability Zone and cannot span multiple zones.
+   b) You can launch AWS resources, such as EC2 instances, into specific subnets. 
+   c) Subnets can be either public or private, depending on their CIDR block and routing    configuration.
+   d) Public subnets have a route to the internet via an Internet Gateway, while private subnets do not.
+   e) You can connect subnets to the internet, other VPCs, and your own data centers using various gateway types and routing configurations.
 6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. 
    Work with Linux EC2 instances in multi-AZ via EFS Mount Target. There is no capacity planning, 
    highly available and scalable but expensive.
@@ -200,12 +210,49 @@ AWS Important Notes -
     8) Region is selected along with string as Record ID. Then put Record name as what is needed and Record type.
     9) Test the outcome.
 47) CloudFront - It is CDN, improves read performance, content is cached at the edge. DDoS protection, AWS WAF, integration with Shield. Usage as ingress in 
-    S3 bucket, custom Origin. It uses CloudFront Origin Access Control (OAC). It provides Global Edge Network. File cached via TTL (Time to Live).
+    S3 bucket, custom Origin. It uses CloudFront Origin Access Control (OAC). It provides Global Edge Network and served at the edge.
+    File cached via TTL (Time to Live).
     1) On CloudFront dashboard go create distribution.
     2) Then choose origin domain, here we choose the URL of the S3 bucket.
-    3) Keep origin access as Public.
-    4) Create OAC with same default name as the S3 bucket and keep the signining behavior as "Sign Requests"(you can also ask to not override auth headers if they are present).
-    5) We can have custom Header added, which will be added in every request.
+    3) Also one could add Custom  header to include in the rquests and can enable origin shield.
+    4) Keep origin access as Public, there are other options like Origin access control and legacy access identities.
+       We will choose Origin control settings and create a OAC for S3 bucket and we write down in S3 permissions. And CloudFront  will 
+       provide the policy.
+    5) Cache key and origin requests options - Cache policy and origin request policy, Legacy cache settings and origin request policy.
+    6) Also for cache behaviour - path pattern, compress objects automatically.
+    7) Viewer - protocol policy, allowed HTTP methods, retruct viewer access. 
+    8) Response headers policy - optional - it has CORS policies.
+    9) Choose edge function to associate with this cache behaviour, CloudFront event will invokes the function.
+    10) WAF - option - enable security protection, and not able protections.
+    11) Other settings price - optional, alternate domain name - optional, custom SSL certificate - optional, supported HTTP versions, 
+       Default root object which is base file - optional and also standard logging and IPv6. 
+48) S3 Transfer Accceleration with Edge location that carry the objects closer to another bucket, so that it could be closer to the location.
+49) AWS Global Accelerator - Improve global application availability and performance using the AWS global network.
+    We leverage the AWS's internal network to optimize routing to our application. Quite similar to CloudFront in terms of delivering the content.
+    But no caching, proxying packets at edge. Improves performance for different types of apps over TCP or UDP.
+    Good for HTTP cases where we need static IP address, required deterministic fast regional failover.
+50) AWS Outposts - Hybrid Cloud is used by many companies we can distribute between -
+    a) One on AWS
+    b) On-premises - Here Outposts are AWS server racks and provide all the services including management on on-premises.
+    Benefits -
+    a) Low latency access to on-premises.
+    b) Local data processing.
+    c) Data residency
+    d) Easier migrations
+    Some services that work on Outposts - EC2, EBS, S3, EKS, ECS, RDS, EMR.
+51) WaveLength Zone - Are infra deployments embedded within the telecommunication provider's datacenters at the edge of 5G network.
+    Brings AWS services to the edge of 5G network. This for ultra-low latency through 5G network, without leaving Communication Service Provider's
+    network. Allows high-bandwidth and secure connection to the parent AWS Region.
+52) Local Zones - Places AWS compute, storage, database, and other selected AWS service closer to end users to run latency-sensitive app.
+    Extend the VPX to more locations.
+    When you create a new AWS Local Zone, you would need to create a new subnet within that Local Zone and associate it with your VPC:
+    a) First, you need to enable the Local Zone in your AWS Region. This can be done through the AWS Management Console or the AWS CLI.
+    b) Once the Local Zone is enabled, you can create a new subnet within that Local Zone. When creating the subnet, you would specify the Availability Zone (AZ) as 
+       the Local Zone.
+    c) After creating the subnet, you can associate it with your existing VPC. This can be done through the console or the AWS CLI using the 
+       create-subnet command.
+    d) You can then associate security groups with the resources (e.g., EC2 instances) launched in the subnet within the Local Zone, 
+       just like you would for any other subnet in your VPC.
 
 
 Note:- Regions - For deploying applications and infra
