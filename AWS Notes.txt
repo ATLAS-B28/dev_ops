@@ -25,17 +25,27 @@ AWS Important Notes -
    highly available and scalable but expensive.
    - EFS Infrequent Access is a storage class that is cost optimized for flies not accessed 
      every day based on their usage last time (60 days) enabled with lifecycle policy.
+Scaling and Elasticity section -
 7) Autoscaling and Load Balancing
   - basics -
       Scalability and Elasticity - 
         1st Is ability to scale up or scale out.
         2nd Is that there will be auto-scaling for system to scale based on load.
 8) ELB - Elastic Load Balancer - Comes under EC2 and it is managed load balancer.
+   Important points of load balancer - 
+   a) Spread load across multiple downstream instances.
+   b) Expose single point of access (DNS) to our app. 
+   c) Seamlessly handle failures of downstream instances.
+   d) Regular health performiance.
+   e) Provide SSL termination (HTTPS) for our website.
+   f) High availability across zones.
+   Using of ELB - It is a managed load balancer.
    - 4 Kinds of Load Balancers in AWS -
      1) Application LB (HTTP/HTTPS/RPC) - Layer 7, routing features, static DNS(URL). 
      2) Network LB (ultra-high performance, allows for TCP and UDP) - Layer 4 - Static IP via Elastic IP.
      3) Gateway LB (GENEVE Protocol) - Layer 3 - this protocol on IP Packets, routes traffic to Firewalls set by us, Intrusion detection. 
      4) Classic LB - Layer 4 & 7 (retired).
+----------------
 9) S3 - Backup and storage, disaster recovery, hybrid cloud storage, media hosting, 
    application host, archive, data lakes, software delivery, static website. Allows people to store 
    objects(files) in buckets(directories). Buckets are defined at region level and must have globally 
@@ -199,6 +209,7 @@ AWS Important Notes -
     each wieght indicates the % of traffic each instance will get form the client and we have health checks here. Latency RP looks at user's location and then 
     redirects them to the closest server, this is to reduce latency via Route 53, finally there is Failover RP for distater recovery, here if primary instance 
     fails then the traffic will be redirected to failover instance, this is done by Route 53.
+    Route 53 features are (non exhaustive list): Domain Registration, DNS, Health Checks, Routing Policy.
     Setup process - 
     1) Go to the dashboard in route 53 page.
     2) Navigate to Register Domain and type the domain and it will check for availability, if so pay a price for it on yearly basis.
@@ -247,68 +258,69 @@ AWS Important Notes -
     Extend the VPX to more locations.
     When you create a new AWS Local Zone, you would need to create a new subnet within that Local Zone and associate it with your VPC:
     a) First, you need to enable the Local Zone in your AWS Region. This can be done through the AWS Management Console or the AWS CLI.
-    b) Once the Local Zone is enabled, you can create a new subnet within that Local Zone. When creating the subnet, you would specify the Availability Zone (AZ) as 
-       the Local Zone.
+    b) Once the Local Zone is enabled, you can create a new subnet within that Local Zone. When creating the subnet, you would specify 
+       the Availability Zone (AZ) as the Local Zone.
     c) After creating the subnet, you can associate it with your existing VPC. This can be done through the console or the AWS CLI using the 
        create-subnet command.
     d) You can then associate security groups with the resources (e.g., EC2 instances) launched in the subnet within the Local Zone, 
        just like you would for any other subnet in your VPC.
+53) SQS - Simple Queue Service. A producers sends messages to this queue and and the queue poll messages to the cosumers. It is fully managed, used for
+    decoupling applications. Scales from 1 message per second to 10,000s per second, it can also retain messages between 4 to 14 days with limitations 
+    on number of messages through the queue could be sent. Messages deleted after customers read and has latency lower then 10ms. It also works on FIFO queue model.
+    Setup - 
+    a) Choose type of queue - standard with once delivery and best efforts ordering and FIFO with delivery and once only processing.
+    b) A name.
+    c) Set visibility timeout, message retention report, delivery delay, max. message Size, receive message wait time.
+    d) For encryption - 1st we have server side encryption, and key type either ne SSE-SQS or SSE-KMS.
+    e) Access policy could be 2 - 
+       1) Basic - Has the settings for queue owner or specified AWS accounts as sender and receiver.
+       2) Advanced - Could be defined using JSON.
+    f) Redrive allow policy & Dead letter policy - Helps identify which source queues can use this queue as dead-letter queue.
+       Dead letter means a queue that other queues can target for messages that were not successfully processed  
+54) Kinesis - Real-time big data streaming, it is managed service collect, process, analyze real-time streaming data at any scale.
+    There are 2 more things Kinesis Firehose, Data Streams, Analytics and Video Streams.
+55) SNS - Event publishers sends to one SNS topic and many event subscribers as we want to listen to the SNS topic notifications.
+    Each subscriber to the topic will get all the messages. Up to 12,500,000 subscriptions per topic and 100,000 topics limit.
+    Setup - 
+    a) Types of SNS - 
+       1) Name and Display name.
+       2) FIFO - Strictly-preserved message ordering.
+                 Exactly-once message delivery.
+                 High throughput, up to 300 publishes/second.
+                 Subscription protocols: SQS.
+          Standard - Best-effort message ordering.
+                     At-least once message delivery.
+                     Highest throughput in publishes/second.
+                     Subscription protocols: SQS, Lambda, HTTP, SMS, email, mobile application endpoints.
+    b) Encryption - optional - AWS KMS Key.
+    c) Access policy - optional - Choose methods - 
+    d) Basic - options for who will be the publisher and subcriber - topic owner, specific endpoint, specific AWS account.
+    e) Advanced - A JSON config file.
+    f) Data Protection policy - basic & advanced with JSON - 
+        a) Configuration mode - basic and advanced.
+        b) Custom data identifiers config.
+        c) Deny config.
+        d) De-identify config.
+        e) Audit config to audit sensitive data.
+    g) Delivery policy (HTTP/S) - To retry to deliver HTTP/S endpoints.
+    h) Delivery status logging - Log status delivery for various protocols - SQS, Lambda, Kinesis Firehose, HTTP/S,  Platform endpoint.
+    Creating Subscription - 
+    a) Fill in details like Topic ARN, Protocol, Endpoint.
+    b) Subscription filter policy - optional - Scope could be applied attributes or body of message.
+    c) Redrive policy - optional - Edit the queue we wnat to have for dead-letter.
+    Publish message to pic -
+    a) Message details - put in the subject and time to live as optional.
+    b) Message body - There are 2 structures - 
+       1) Identical payload for all delivery protocol and just put in the message.
+       2) Custom payload for each protocol with JSON.
+    c) Message attributes - could be type, name, value.
+56) MQ - Traditional applications running from on-premises may use open protocol such as - MQTT, AMQP, STOMP,
+    OpenWire, WSS. When mirgation to the cloud, instead of redoing things we use them direclty with AWS MQ.
+    It is a managed message broker for KAFKA, RABBITMQ, ACTIVEMQ. But doesnot scale, has failover and also run in multi-AZ.
+    Has both queries and topic features.
+
 
 
 Note:- Regions - For deploying applications and infra
        AZ - Made of multiple data centers
        Edge Locations - For content delivery as close as possible to users
-
-
-
-
-Note:- 
-Edge computing is a distributed computing framework that brings enterprise applications 
-closer to data sources such as IoT devices or local edge servers. 
-This proximity to data at its source can deliver strong business 
-benefits, including faster insights, improved response times and better 
-bandwidth availability.
-
-
-
-
-Quota resolution - 
-The instance launch failed because the instance type you selected requires more vCPU capacity than your current vCPU limit allows for that instance type's bucket.
-Resolution
-Amazon Q recommends the following steps to resolve your error
-
-
-If you don't have permissions to do the following changes, contact your AWS Administrator.
-
-Open the AWS Service Quotas console
-In the navigation pane, choose 'EC2 Instance vCPU limits'
-Select the region 'us-west-2'
-Locate the quota named 'Running On-Demand Standard (A, C, D, H, I, M, R, T, Z) Instance Family vCPUs'
-Click 'Request quota increase' for this quota
-Follow the guided workflow to request a vCPU quota increase for the instance family you need
-Once the quota increase is approved, retry launching your EC2 instance.
-
-
-Here are the next steps after requesting a quota increase for Amazon EC2:
-
-Wait for AWS to review and process your quota increase request. This typically takes 1-2 business days.
-
-You can check the status of your quota increase request in the AWS Service Quotas console. The status will show as "Pending" until it is approved or denied.
-
-Once your request is approved, the new quota limit will be applied to your account. You can then launch EC2 instances up to the new quota limit.
-
-If your request is denied, you can try providing additional justification for the quota increase or consider launching instances in a different AWS Region that has available capacity.
-
-For the most up-to-date information on EC2 quotas and the request process, I recommend referring to the AWS documentation:
-
-AWS Service Quotas documentation: https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html
-How to request a vCPU service quota increase for Amazon EC2: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-resource-limits.html#request-increase
-
-
-
-
-
-
-
-
-
