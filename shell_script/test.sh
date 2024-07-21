@@ -46,10 +46,94 @@
 #my_arr=(apple banana mango)
 
 #echo "1st element: ${my_arr[0]}"
-echo "All elements: ${my_arr[@]}"
+#my_arr=(apple banana, mango)
+#echo "All elements: ${my_arr[@]}"
+
 
 #assoicative arrays in bash 4.0
-declare -A fruits
-fruits=([apple]="red" [banana]="yellow" [raw mango]="green")
+#declare -A fruits
+#fruits=([apple]="red" [banana]="yellow" [raw mango]="green")
 
-echo "Color of mango: ${fruits[raw mango]}"
+#echo "Color of mango: ${fruits[raw mango]}"
+
+#grep - search for a pattern in a file
+#grep "more text" new_file.txt
+
+#comparions 
+#echo "Please enter a number: "
+#read a
+#echo -e "\nPlease enter another number: "
+#read b 
+#if [ $a -gt 60 ] && [ $b -lt 100 ]; then 
+#  echo "true"
+#else 
+#  echo "false"
+#fi
+
+#while loop
+#i=1
+#while [[ $i -le 10 ]]; do
+#   echo "$i"
+#   ((i += 1))
+#done
+#for loop
+#for i in {1..6}
+#do 
+#  echo $i
+#done
+##switch statements
+#fruit="amba"
+#case $fruit in
+#    "amba")
+#      echo "1st case"
+#      ;;
+#    "kela")
+#       echo "2nd case"
+#       ;;
+#    *)
+#        echo "No match found"
+#    ;;
+#esac
+
+#scheduling scripts using cron jobs
+#no. of * represent minutes, hours, days, 
+#months weekdays, respectively
+# do later
+ 
+#Debugging 
+#set -x
+
+#set -x
+
+#echo "Hello World"
+#ls -l
+
+#set +x
+
+#check the exit code
+false
+
+if [ $? -ne 0 ]; then
+   echo "Error occured"
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
