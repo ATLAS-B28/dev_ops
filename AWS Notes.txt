@@ -17,7 +17,7 @@ AWS Important Notes -
    A subnet is a range of IP addresses within your VPC. Some key points about subnets:
    a) Subnets reside in a single Availability Zone and cannot span multiple zones.
    b) You can launch AWS resources, such as EC2 instances, into specific subnets. 
-   c) Subnets can be either public or private, depending on their CIDR block and routing    configuration.
+   c) Subnets can be either public or private, depending on their CIDR block and routing configuration.
    d) Public subnets have a route to the internet via an Internet Gateway, while private subnets do not.
    e) You can connect subnets to the internet, other VPCs, and your own data centers using various gateway types and routing configurations.
 6) EFS - Elastic File System is a managed network file system that can be mounted on 100s of EC2. 
@@ -31,6 +31,65 @@ Scaling and Elasticity section -
       Scalability and Elasticity - 
         1st Is ability to scale up or scale out.
         2nd Is that there will be auto-scaling for system to scale based on load.
+  - creation of load balancing -
+      Types -
+      1) Application LB - Choose an ALB when you need a flexible feature set for your applications
+         with HTTP and HTTPS traffic. Operates on the request level, ALB provide advanced routing and 
+         visibility features targeted at application architectures, including microservices, containers.
+      2) Network LB - Choose a Network Load Balancer when you need ultra-high performance, 
+         TLS offloading at scale, centralized certificate deployment, support for UDP, and static IP addresses 
+         for your applications. Operating at the connection level, Network Load Balancers are capable 
+         of handling millions of requests per second securely while maintaining ultra-low latencies.
+      3) Geatway LB - Choose a Gateway Load Balancer when you need to deploy and manage a fleet of third-party 
+         virtual appliances that support GENEVE. These appliances enable you to improve security, compliance, 
+         and policy controls.
+      Basic Configuration -
+       1) Name the balancer.
+       2) Scheme - a) Internet Facing - Routes requests from clients over the the internet to targets. Requures a public subnet.
+                   b) Internal - Routes requests from the clients to targets using private IP addresses.
+       3) Load Balancer IP Address Type - IPv4, DualStack, DualStack without public IPv4.
+       4) Network Mappings - routes to targets in the selected subnets and in accordance with your IP address settings.
+          Availability mappings - 2 zones and one subnet per zone.
+       5) Security Groups - Is a set of firewall rules that control the traffic to your balancer.
+       6) Listeners adn routing - A listener is a process that checks for connection requests using the port and protocol you configure. 
+          The rules that you define for a listener determine how the load balancer routes requests to its registered targets.
+          Here we create traget group - basic configuration could be instances, IP addresses, lambda function, application LB, portocol - port
+          VPC with protocol version. Optimize with service integration.
+       7) Adding the targets by going into the console for it and selecting the instances.
+       8) Test it.
+    ASG - is to scale out and in to match the load on the application and website. And ensure the min. no. of machines.
+    Automatically register new instances to a load balancer and Replace unhealthy instances.
+    ________________________________________________________
+    EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2
+    ________________________________________________________
+    |Min. size|                     |                      | <- this ASG
+    |Actual Size / desired capacity||  Scale out as Needed |
+    |                Max. Size                             |
+    We use ASG with load balancer.
+                            __LB_
+                           / /|\ \ 
+    ______________________/ / | \ \_________________________
+    EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2 EC2
+    ________________________________________________________
+    |Min. size|                     |                      | <- this ASG with LB
+    |Actual Size / desired capacity||  Scale out as Needed |
+    |                Max. Size                             |
+  - creation auto scaling -
+       1) Choose name and launch template or configuration. And have the source template if required.
+       2) Create the launch template - 
+          a) Set the application and OS images - select the AWS Linux image and select the required architecture.  
+          b) Choose the instance type.
+          c) Key pair(login)(optional).
+          d) Network settings - subnet and security group. And also can do advanced network configuration.
+          e) EBS volume - could be added more.
+          f) Optional - resource tags.
+          g) Advanced details - 
+             For now uadd user data - a simple bash script for the EC2s.
+       3) After that, in the network have VPC and Availability Zones and subnets.
+       4) Add the load balancing and attach the load balancer. One could add VPC Lattice integrations. There are health checks too.
+       5) Configure group size and scaling, and can add automatic scaling and to track its target, along with instance maintenance policy.
+    There are many things that could be there like lifecycle hooks, Warm pool(pre-initializing EC2 instances). 
+    ASG scaling strategies - Manual, Dynamic -> Simple Scaling, Traget Tracking, Scheduled Scaling - Predictive Scaling using ML.
 8) ELB - Elastic Load Balancer - Comes under EC2 and it is managed load balancer.
    Important points of load balancer - 
    a) Spread load across multiple downstream instances.
