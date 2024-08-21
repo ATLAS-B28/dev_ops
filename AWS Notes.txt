@@ -36,6 +36,7 @@ Scaling and Elasticity section -
       1) Application LB - Choose an ALB when you need a flexible feature set for your applications
          with HTTP and HTTPS traffic. Operates on the request level, ALB provide advanced routing and 
          visibility features targeted at application architectures, including microservices, containers.
+         Used for HTTP and HTTPS load balancing. They are the best-suited for this kind of traffic.
       2) Network LB - Choose a Network Load Balancer when you need ultra-high performance, 
          TLS offloading at scale, centralized certificate deployment, support for UDP, and static IP addresses 
          for your applications. Operating at the connection level, Network Load Balancers are capable 
@@ -377,9 +378,41 @@ Scaling and Elasticity section -
     OpenWire, WSS. When mirgation to the cloud, instead of redoing things we use them direclty with AWS MQ.
     It is a managed message broker for KAFKA, RABBITMQ, ACTIVEMQ. But doesnot scale, has failover and also run in multi-AZ.
     Has both queries and topic features.
-
-
-
+57) CloudWatch Metrics - Provides metrics for every services in AWS. We us dashboards.
+    a) EC2 instances - For CPU utilization, status checks, networks, detailed metrics available for every 5 min.
+    b) EBS volume - For disk writes/reads.
+    c) S3 buckets - For we track - BucketSizeBytes, NumberOfObjexts, AllRequests.
+    d) Billing.
+    e) Service limits - How much the API will be used.
+    f) Custom metrics - push own metrics.
+    Alarms - Used to trigger notifications for any metric, for actions like ASG, EC2, SNS.
+    There are various options for samoling and one can choose the period on which evaluate an alarm.
+58) VPC - Virtual Private Cloud. It includes - VPC, Subnet, Internet Gateways, NAT Gateways, 
+    Security Groups, Network ACL, VPC Flow Logs, VPC Peering, VPC Endpoint, Site to Site VPN, Direct Connect, Transit Gateway.
+    IP Addresses in AWS - We have IPv4(Public/Private), this is added EC2 instance in the network configuration. Elastic IP allows
+    a fixed public IPv4 address to EC2 instance.
+    a) VPC - A private network to deploy your resources(reginal resources).
+    b) Subnets - Allows you to create partition network inside your VPC(Availability Zone resource).
+       Public Subnet - accessible from internet, Private Subnet - not accessible from the internet. 
+       To have access between subnets and internet we use Route Tables.
+       ______________________________________
+      | AWS Cloud                           |  
+      |  __________________________________ |                                 
+      |  | Region                         | |
+      |  | ______________________________ | |   
+      |  || VPC   CIDR Range             || |
+      |  ||  ______                      || |
+      |  || |AZ    |                     || |
+      |  || |Public|                     || |
+      |  || |Prvate|                     || |
+      |  ||______________________________|| |
+      |  |________________________________| |
+      |_____________________________________|
+    c) Internet Gateways - Helps our VPC to connect with the internet.    
+    d) NAT Gateways and Intances - NAT(Network Address Translation) are used AWS services used to enable instances in private subnet to connect to
+       internet or other services while preventing the internet to initiate a connection to those instances.
+       Gateways provide high throughput and are designed to scale automatically based on traffic. The instance is an EC2
+       instance to perform the NAT functions for private subnets, it is then registered to the route table to go through the NAT instance.   
 Note:- Regions - For deploying applications and infra
        AZ - Made of multiple data centers
        Edge Locations - For content delivery as close as possible to users
