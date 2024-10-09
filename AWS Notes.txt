@@ -400,7 +400,7 @@ Scaling and Elasticity section -
       |  __________________________________ |                                 
       |  | Region                         | |
       |  | ______________________________ | |   
-      |  || VPC   CIDR Range             || |
+      |  || VPC CIDR Range               || |
       |  ||  ______                      || |
       |  || |AZ    |                     || |
       |  || |Public|                     || |
@@ -409,10 +409,83 @@ Scaling and Elasticity section -
       |  |________________________________| |
       |_____________________________________|
     c) Internet Gateways - Helps our VPC to connect with the internet.    
-    d) NAT Gateways and Intances - NAT(Network Address Translation) are used AWS services used to enable instances in private subnet to connect to
-       internet or other services while preventing the internet to initiate a connection to those instances.
+    d) NAT Gateways and Intances - NAT(Network Address Translation) are managed AWS services used to enable instances in 
+       private subnet to connect to internet or other services while preventing the internet to initiate 
+       a connection to those instances.
        Gateways provide high throughput and are designed to scale automatically based on traffic. The instance is an EC2
        instance to perform the NAT functions for private subnets, it is then registered to the route table to go through the NAT instance.   
+       Flow Logs - 1. VPC Flow Logs
+                   2. Subnet Flow Logs
+                   3. Elastic Network Interface Flow Logs
+       VPC Peering - Connect VPCs privately using AWS's network. And they behave as if they were of the same network.
+                     The CIDR should not overlap.
+                     To create Peer - 
+                     1. Name the peer network.
+                     2. Select a local VPC to peer with the requester - a vpc id is selected.
+                     3. Select another VPC to peer with.
+       VPC Endpoint - Allows us to connect to AWS network using private network instead of public network.
+                      Enchances security and provides low latency to access AWS services. The endpoint gateway is used 
+                      connect to S3 & DynamoDB. Endpoint interface is for the rest of the services.
+                      To create an endpoint - 
+                      1. We name the endpoint and choose service category - AWS Services, Marketplace Services, Other endpoint services,
+                         PrivateLink Ready partner, EC2 instance connect.
+                      2. Choose the serivce to which you want to connect and whether it is interface or gateway.
+                      3. The the VPC to which the endpoint needs to be added to.
+                      The difference between Interface and Gateway is -
+                      1. Gateway supports connectivity to S3 and DynamoDB only whereas Interface gives a wide-spread access.
+                      2. Gateway requires no Elastic Network Interface, Interface acts as entry point to reach AWS PrivateLink 
+                         supported services.
+                      3. Interface uses Private IP address and allows on-premises as well as cross-region,
+                         Here cross region is not allowed.
+                      4. Interface is associated at subnet level and allows direct flow to the specific services. Gateway is at VPC level, routes
+                         traffic throught the gateway endpoint to the specific services.  
 Note:- Regions - For deploying applications and infra
        AZ - Made of multiple data centers
        Edge Locations - For content delivery as close as possible to users
+       CIDR - Classless Inter-Domain Routing 
+              Structure - Nerwork_Address/Host_Address 
+       ACL - Access Control List
+       DHCP - Dynamic Host Configuration Protocol
+59) Network ACL & Security groups - 
+        Network ACL - Is a firewall that controls traffic from and to subnet. It has rules to allow & deny access to the subnet.
+                      They are attached to subnet levels and the rules only include IP addresses. It is stateless - return traffic must be allowed
+                      by the rules. The rules are processed in order to allow the traffic and they automatically applied to all the instances
+                      in the subnet it's associated with.
+        Security Groups - A firewall that controls traffic to and from an EC2 Instance. Can have only ALLOW rules. Rules include IP and other 
+                          security groups. It is stateful - return traffic allowed regardless of rules. Rules evaluated before traffic enters
+                          and applies to an instance only if someone specifies it at the launching of an instance.
+    ____________________________
+   |VPC                         |
+   |  _________________________ | 
+   | |Public Subnet            ||       
+   | |  NACL                   ||
+   | |  _____________________  ||
+   | | |      Security Group | ||
+   | | |                     | ||
+   | | |      EC2            | ||
+   | | |                     | ||
+   | | |_____________________| ||
+   | |_________________________||
+   |____________________________|   
+60) AWS PrivateLink - Most secure and scalable way to expose a service to 1000s of VPCs.
+    Does not require VPC peering, internet gateway, NAT, route tables.
+    We can connect to private network of AWS's customers.
+61) AWS Shield Standard/Advanced - Protects aganist DDoS atttck for no cost. Advanced is more premium(24/7).
+    Advanced provides protection from sophisticated attack on EC2, ELB, CloudFront, Global Accelerator, Route 53.
+62) AWS WAF - Filter specific requests based on rules. WAF(Web Application Firewall) - Protects from common web exploits aka layer 7.
+    Layer 7 is HTTP, & deployed on ALB, API Gateway, CloudFront. We define rules in Web ACL, including IP addresses, HTTP headers & body or userguide
+    strings. Size & geo-constraints. Protects aganist SQL injection or XSS attacks. Rate-based rules aka based on the
+    occurance of events for DDoS.
+63) CloudFront & Route 53 - Availability protection using global edge newtwork, combined with the Shield, 
+    provides attack mitigation at the edge.
+64) Network Firewall - Protects entire VPC from Layer 3 to 7.
+    Can inspect - VPC-VPC traffic, outbound and inbound traffic, to/from direct connect and site-to-site VPN. 
+65) Firewall Manager - Manage security rules in all accounts of AWS. 
+    Security Policy - 1. Common set of security rules - VPC security groups for VPC, ALB, etc. 
+                      2. WAF rules.
+                      3. Shield Advanced.
+                      4. Network Firewall. 
+    Rules are applied to new resources as they are created automatically and for future accounts too.
+66) KMS - Key Management Service. To manage encryption for keys used for data in transit/rest.
+    One can opt-into it - EBS Volumes - encrypt volumes, Server-side encryption of data same for RDS, EFS, RedShift.
+    In some places it is automatically enabled - Stroage Gateway, CloudTrail, S3 Glacier.
