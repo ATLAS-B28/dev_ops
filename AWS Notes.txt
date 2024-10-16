@@ -489,3 +489,12 @@ Note:- Regions - For deploying applications and infra
 66) KMS - Key Management Service. To manage encryption for keys used for data in transit/rest.
     One can opt-into it - EBS Volumes - encrypt volumes, Server-side encryption of data same for RDS, EFS, RedShift.
     In some places it is automatically enabled - Stroage Gateway, CloudTrail, S3 Glacier.
+    It is the software side of encryption.
+    Types keys in KMS - 
+    1. Customer Managed Keys - Create, manage & used by customer, rotation of policy & bring your own key allowed.
+    2. AWS Managed Keys - Created, managed and used on customer's behalf by AWS.
+    3. AWS Owned Key - Collection of CMKs that an AWS serivce owns & manages to use in multiple accounts. Used for user resource protection.
+    4. CloudHSM Keys - Keys generated from your own CloudHSM hardware device. Cryptographic operations are performed within CloudHSM cluster.
+67) CloudHSM - Provisions encryption hardware. HSM(Hardware Security Moudle).
+68) Secerts Manager - Meant for storing secerts, has capability to rotation of secerts every X days. Automating generation of secerts on rotation.
+    Secerts are encrypted using KMS, & intergates with RDS service. Meant for RDS intergation.
