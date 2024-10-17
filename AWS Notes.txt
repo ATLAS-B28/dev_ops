@@ -498,3 +498,13 @@ Note:- Regions - For deploying applications and infra
 67) CloudHSM - Provisions encryption hardware. HSM(Hardware Security Moudle).
 68) Secerts Manager - Meant for storing secerts, has capability to rotation of secerts every X days. Automating generation of secerts on rotation.
     Secerts are encrypted using KMS, & intergates with RDS service. Meant for RDS intergation.
+69) Artifact - Portal provides customers on-demand access to AWS compilance documentation and agreements.
+    The artifact reports that allow us to download AWS security and compilance from 3rd party auditors. Then there are agreements that 
+    allow us to review, accept and track their status.
+70) GuardDuty - It is an intelligent threat discovery to protect our account. Uses ML algorithms for anomaly detection, 3rd party data.
+    We can input data including - CloudTrail, VPC Flow logs, DNS logs. And for notifications we can setup of EventBridge.
+71) Inspector - Automated Security assessments, EC2 instances - leveraging AWS System manager agent, network accessiblilty, running OS for vulnerabilities.
+    For container images push to ECR, i.e. to assess the containers being pushed. Can be used for Lambda function.
+72) AWS Config - Helps with auiditing and recording compilance of our AWS resources. Records configuration and changes over time.
+    Possibility of storing config data into S3. Makes sure that we know what kind of access different users have to resources. One can use SNS for any changes.
+    It is pre-region service. 
